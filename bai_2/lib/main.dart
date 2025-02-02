@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 void main() {
   runApp(
@@ -28,6 +28,17 @@ class MyWidget extends StatelessWidget {
       // overflow: TextOverflow.fade // làm mờ dòng cuối cùng
       // overflow: TextOverflow.visible // hiển thị tràn ra ngoài khung chứa
       textScaleFactor: 1.5, // Chữ to lên
+      style: TextStyle(
+        color: Colors.red,
+        // backgroundColor: Colors.green,
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        fontStyle: FontStyle.italic,
+        fontFamily: 'Times New Roman',
+        // wordSpacing: 20, // chỉnh khoảng cách giữa các từ với nhau
+        // letterSpacing: 10, // chỉnh khoảng cách giữa các chữ cái
+        decoration: TextDecoration.underline, // kiểu chữ
+      ),
     );
   }
 }

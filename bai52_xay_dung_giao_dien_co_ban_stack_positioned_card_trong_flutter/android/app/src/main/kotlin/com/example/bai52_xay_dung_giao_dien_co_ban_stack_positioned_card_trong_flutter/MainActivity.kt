@@ -1,0 +1,5 @@
+package com.example.bai52_xay_dung_giao_dien_co_ban_stack_positioned_card_trong_flutter
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()

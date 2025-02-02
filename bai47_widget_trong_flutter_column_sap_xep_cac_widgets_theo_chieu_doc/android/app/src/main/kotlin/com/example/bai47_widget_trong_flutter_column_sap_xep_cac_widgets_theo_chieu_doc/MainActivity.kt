@@ -1,0 +1,5 @@
+package com.example.bai47_widget_trong_flutter_column_sap_xep_cac_widgets_theo_chieu_doc
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()

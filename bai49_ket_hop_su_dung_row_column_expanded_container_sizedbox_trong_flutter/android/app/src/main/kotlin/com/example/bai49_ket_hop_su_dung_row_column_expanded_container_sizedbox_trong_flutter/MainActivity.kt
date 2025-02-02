@@ -1,0 +1,5 @@
+package com.example.bai49_ket_hop_su_dung_row_column_expanded_container_sizedbox_trong_flutter
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
