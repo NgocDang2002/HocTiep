@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pos365/components/custom_text_field.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -9,6 +10,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +48,23 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Column(
-              children: [
-                Text(
-                  'Sign in',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontSize: 32,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Text(
+                    'Sign in',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 32,
+                    ),
                   ),
-                )
-              ],
+                  CustomTextField(
+                    controller: usernameController,
+                    hintText: 'Username',
+                  ),
+                ],
+              ),
             ),
           ),
           Positioned.fill(
