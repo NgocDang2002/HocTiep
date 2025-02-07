@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatefulWidget {
+// class CustomTextField extends StatefulWidget {
+class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final IconData? iconData;
@@ -17,26 +18,35 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
-}
-
-class _CustomTextFieldState extends State<CustomTextField> {
-  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(widget.radius),
-      ),
-      child: TextField(
-        controller: widget.controller,
-        obscureText: widget.isPassword,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          prefixIcon: widget.iconData != null ? Icon(widget.iconData) : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(widget.radius),
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.green,
+            width: 1.5,
           ),
+          borderRadius: BorderRadius.circular(radius),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue,
+              offset: Offset(5, 5),
+              blurRadius: 3,
+            )
+          ]),
+      child: TextField(
+        controller: controller,
+        obscureText: isPassword,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: hintText,
+          prefixIcon: iconData == null
+              ? null
+              : Icon(
+                  iconData,
+                  color: Colors.green,
+                ),
+          prefixIconConstraints: BoxConstraints(minWidth: 50),
         ),
       ),
     );
