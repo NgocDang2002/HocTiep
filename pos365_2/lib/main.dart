@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pos365_2/data/models/login.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
+
 
 void main() {
   runApp(
@@ -49,21 +54,38 @@ class _MyAppState extends State<MyApp> {
         inputcontainerUser.isNotEmpty &&
         inputcontainerPass.isNotEmpty) {
       // Tạo URL theo đúng định dạng
+      // final Uri url = Uri.parse(
+      //     'https://$inputcontainerShop.pos365.vn/api/auth/credentials?Username=$inputcontainerUser&Password=$inputcontainerPass&format=json');
       final Uri url = Uri.parse(
           'https://$inputcontainerShop.pos365.vn/api/auth/credentials?Username=$inputcontainerUser&Password=$inputcontainerPass&format=json');
       // print(
       //     'https://$inputcontainerShop.pos365.vn/api/auth/credentials?Username=$inputcontainerUser&Password=$inputcontainerPass');
-      if (await canLaunchUrl(url)) {
-        // Kiểm tra xem có thể mở đường link hay không
-        await launchUrl(url,
-            mode: LaunchMode
-                .externalApplication); // Mở link trong trình duyệt ngoài
+      // Gửi yêu cầu HTTP GET đến API
+      final response = await http.get(url);
+       // Kiểm tra nếu mã trạng thái HTTP là 200 (thành công)
+      if(response.statusCode == 200){
+        // Giải mã dữ liệu JSON từ phản hồi
+        final data = json.decode(response.body);
+        print("UserId: ${data['UserId']}");
+        print("SessionId: ${data['SessionId']}");
+        print("UserName: ${data['UserName']}");
       } else {
-        // Hiển thị thông báo nếu không thể mở đường link
+        // Hiển thị thông báo nếu có lỗi
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Không thể mở đường link!")),
+          SnackBar(content: Text("Đăng nhập thất bại! Mã lỗi: ${response.statusCode}")),
         );
       }
+      // if (await canLaunchUrl(url)) {
+      //   // Kiểm tra xem có thể mở đường link hay không
+      //   await launchUrl(url,
+      //       mode: LaunchMode
+      //           .externalApplication); // Mở link trong trình duyệt ngoài
+      // } else {
+      //   // Hiển thị thông báo nếu không thể mở đường link
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text("Không thể mở đường link!")),
+      //   );
+      // }
     }
   }
 
