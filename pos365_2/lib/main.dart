@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pos365_2/data/models/login.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(
@@ -9,17 +11,60 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
-  TextEditingController containerUser = TextEditingController();
-  TextEditingController containerPass = TextEditingController();
-  TextEditingController containerShop = TextEditingController();
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
-  void _Dangnhap() {
-    print('Tên cửa hàng: ' + containerShop.text);
-    print('Tên đăng nhập: ' + containerUser.text);
-    print('Mật khẩu: ' + containerUser.text);
+class _MyAppState extends State<MyApp> {
+  // final List<Login> login = [
+  //   Login(
+  //       UserId: UserId,
+  //       SessionId: SessionId,
+  //       UserName: UserName,
+  //       DisplayName: DisplayName,
+  //       Roles: Roles,
+  //       Permissions: Permissions,
+  //       ResponseStatus: ResponseStatus,
+  //       ErrorCode: ErrorCode,
+  //       Message: Message,
+  //       Errors: Errors)
+  // ];
+
+  final TextEditingController containerUser = TextEditingController();
+  final TextEditingController containerPass = TextEditingController();
+  final TextEditingController containerShop = TextEditingController();
+
+  // ham để chuyển đổi qua link đăng nhập
+  Future<void> _Dangnhap2() async {
+    // Lấy dữ liệu từ TextField và xóa khoảng trắng thừa
+    String inputcontainerShop = containerShop.text.trim();
+    String inputcontainerUser = containerUser.text.trim();
+    String inputcontainerPass = containerPass.text.trim();
+
+    // kiểm tra nếu hàm khong rỗng mới sử lý
+    if (inputcontainerShop.isNotEmpty &&
+        inputcontainerUser.isNotEmpty &&
+        inputcontainerPass.isNotEmpty) {
+      // Tạo URL theo đúng định dạng
+      final Uri url = Uri.parse(
+          'https://$inputcontainerShop.pos365.vn/api/auth/credentials?Username=$inputcontainerUser&Password=$inputcontainerPass&format=json');
+      // print(
+      //     'https://$inputcontainerShop.pos365.vn/api/auth/credentials?Username=$inputcontainerUser&Password=$inputcontainerPass');
+      if (await canLaunchUrl(url)) {
+        // Kiểm tra xem có thể mở đường link hay không
+        await launchUrl(url,
+            mode: LaunchMode
+                .externalApplication); // Mở link trong trình duyệt ngoài
+      } else {
+        // Hiển thị thông báo nếu không thể mở đường link
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Không thể mở đường link!")),
+        );
+      }
+    }
   }
 
   // cấu trúc web cơ bản
@@ -30,7 +75,7 @@ class MyApp extends StatelessWidget {
       // tiêu đề của mà hình hiển thị
       appBar: AppBar(
         title: Center(
-          child: Text('POS36  '),
+          child: Text('POS365'),
         ),
       ),
       // hiển thị body và cho phép cuộn khi màn hình không hiển thị hết
@@ -63,7 +108,7 @@ class MyApp extends StatelessWidget {
                   border: OutlineInputBorder(),
                   labelText: 'Tên đăng nhập',
                 ),
-                controller: containerPass,
+                controller: containerUser,
               ),
             ),
             Padding(
@@ -77,9 +122,10 @@ class MyApp extends StatelessWidget {
                   border: OutlineInputBorder(),
                   labelText: 'Mật khẩu',
                 ),
-                controller: containerUser,
+                controller: containerPass,
               ),
             ),
+
             SizedBox(
               height: 10,
             ),
@@ -87,7 +133,7 @@ class MyApp extends StatelessWidget {
               width: double.infinity, // chiều rộng full
               height: 40,
               child: ElevatedButton(
-                onPressed: _Dangnhap,
+                onPressed: _Dangnhap2,
                 child: Text(
                   'Đăng Nhập',
                   style: TextStyle(
