@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pos365_2/data/models/login.dart';
+import 'package:pos365_2/features/auth/presentation/pages/home/home.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-
-
 
 void main() {
   runApp(
@@ -62,31 +60,39 @@ class _MyAppState extends State<MyApp> {
       //     'https://$inputcontainerShop.pos365.vn/api/auth/credentials?Username=$inputcontainerUser&Password=$inputcontainerPass');
       // Gửi yêu cầu HTTP GET đến API
       final response = await http.get(url);
-       // Kiểm tra nếu mã trạng thái HTTP là 200 (thành công)
-      if(response.statusCode == 200){
+      // Kiểm tra nếu mã trạng thái HTTP là 200 (thành công)
+      if (response.statusCode == 200) {
         // Giải mã dữ liệu JSON từ phản hồi
         final data = json.decode(response.body);
         print("UserId: ${data['UserId']}");
         print("SessionId: ${data['SessionId']}");
         print("UserName: ${data['UserName']}");
+        // Hiển thị thông báo đăng nhập thành công
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Đăng nhập thành công!")),
+        );
+
+        // Chuyển sang trang Home sau khi đăng nhập thành công
+        _GoToHome();
       } else {
         // Hiển thị thông báo nếu có lỗi
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Đăng nhập thất bại! Mã lỗi: ${response.statusCode}")),
+          SnackBar(
+              content:
+                  Text("Đăng nhập thất bại! Mã lỗi: ${response.statusCode}")),
         );
       }
-      // if (await canLaunchUrl(url)) {
-      //   // Kiểm tra xem có thể mở đường link hay không
-      //   await launchUrl(url,
-      //       mode: LaunchMode
-      //           .externalApplication); // Mở link trong trình duyệt ngoài
-      // } else {
-      //   // Hiển thị thông báo nếu không thể mở đường link
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(content: Text("Không thể mở đường link!")),
-      //   );
-      // }
     }
+  }
+
+  // Hàm chuyển trang
+  void _GoToHome() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Home(),
+      ),
+    );
   }
 
   // cấu trúc web cơ bản
@@ -155,7 +161,8 @@ class _MyAppState extends State<MyApp> {
               width: double.infinity, // chiều rộng full
               height: 40,
               child: ElevatedButton(
-                onPressed: _Dangnhap2,
+                // onPressed: _Dangnhap2,
+                onPressed: _GoToHome,
                 child: Text(
                   'Đăng Nhập',
                   style: TextStyle(
